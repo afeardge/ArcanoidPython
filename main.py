@@ -94,7 +94,10 @@ while True:
         RUN = ballx.Start(pygame.key.get_pressed())
     else:
         for i in blocks:
-            if (ballx.Collision_block(i) == True):
+            CParamsx = CHandler.ballToBlock(ballx, i)
+            if (CParamsx.BlockDamagedEvent == True):
+                ballx.Speed = CParamsx.speed
+                i.Life -= 1
                 if(i. Life != 0):
                     soundlib.sound_pop.play()
                 else:
@@ -111,11 +114,6 @@ while True:
             ballx.Speed = CParams[0].speed
             soundlib.sound_pop.play()
 
-
-
-        # if (ballx.Collision_paddle(player) == True):
-        #     soundlib.sound_pop.play()
-        # CParams = CHandler.ballToScreen(ballx, sc)
         if (CParams[1].CollisionEvent == True):
             ballx.Speed = CParams[1].speed
             soundlib.sound_pop.play()

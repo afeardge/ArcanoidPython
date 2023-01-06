@@ -4,7 +4,7 @@ import math
 
 
 SIZE = 35
-SPEED = 10
+SPEED = 5
 LIFES = 3
 
 class Vectorx:
@@ -94,18 +94,6 @@ class Ball:
             self.Xpos += self.Speed.Getx()
             self.Ypos += self.Speed.Gety()
 
-       
-    # def Collision_Screen(self, screen):
-    #     if ((self.Xpos + self.Radius) >= screen.get_width()):
-    #         self.Speed.Angle_set(math.pi - self.Speed.Angle)
-    #     if ((self.Xpos - self.Radius) <= 0):
-    #         self.Speed.Angle_set(math.pi - self.Speed.Angle)
-    #     if ((self.Ypos + self.Radius) >= screen.get_height()):
-    #         self.Speed.Angle_set(-self.Speed.Angle)
-    #         return True
-    #     if ((self.Ypos - self.Radius) <= 0):
-    #         self.Speed.Angle_set(-self.Speed.Angle)
-    #     return False
     
     def Draw(self, ScreenRender):
         pygame.draw.circle(ScreenRender,self.Color, (self.Xpos, self.Ypos), self.Radius)
