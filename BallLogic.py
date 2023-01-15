@@ -112,32 +112,32 @@ class Ball:
         self.Xpos = PLayer.Rectx.centerx
         self.Ypos = PLayer.Rectx.top - self.Radius
 
-    def Collision_block(self, object) -> bool:
-        #ball
-        #top or bottom collision
-        object.Cdetect = 0
-        if ((self.Xpos >= object.Rectx.left) and (self.Xpos <= object.Rectx.right)):
-            #bottom
-            if(self.Ypos - self.Radius <= object.Rectx.bottom and self.Ypos > object.Rectx.top):
-                self.Speed.Angle_set(-self.Speed.Angle)
-                object.Cdetect = 1
-            #top
-            if(self.Ypos + self.Radius >= object.Rectx.top and self.Ypos < object.Rectx.bottom):
-                self.Speed.Angle_set(-self.Speed.Angle)
-                object.Cdetect = 1 
-        #left or right collision
-        if (self.Ypos >= object.Rectx.top and self.Ypos <= object.Rectx.bottom):
-            #left
-            if (self.Xpos + self.Radius >= object.Rectx.left and self.Xpos < object.Rectx.right):
-                self.Speed.Angle_set(math.pi -self.Speed.Angle)
-                object.Cdetect = 1 
-            if (self.Xpos - self.Radius <= object.Rectx.right and self.Xpos > object.Rectx.left):
-                self.Speed.Angle_set(math.pi -self.Speed.Angle)
-                object.Cdetect = 1
-        if (object.Cdetect == 1):
-            object.Life -= 1
-            object.ChangeColor()   
-        return object.Cdetect
+    # def Collision_block(self, object) -> bool:
+    #     #ball
+    #     #top or bottom collision
+    #     object.Cdetect = 0
+    #     if ((self.Xpos >= object.Rectx.left) and (self.Xpos <= object.Rectx.right)):
+    #         #bottom
+    #         if(self.Ypos - self.Radius <= object.Rectx.bottom and self.Ypos > object.Rectx.top):
+    #             self.Speed.Angle_set(-self.Speed.Angle)
+    #             object.Cdetect = 1
+    #         #top
+    #         if(self.Ypos + self.Radius >= object.Rectx.top and self.Ypos < object.Rectx.bottom):
+    #             self.Speed.Angle_set(-self.Speed.Angle)
+    #             object.Cdetect = 1 
+    #     #left or right collision
+    #     if (self.Ypos >= object.Rectx.top and self.Ypos <= object.Rectx.bottom):
+    #         #left
+    #         if (self.Xpos + self.Radius >= object.Rectx.left and self.Xpos < object.Rectx.right):
+    #             self.Speed.Angle_set(math.pi -self.Speed.Angle)
+    #             object.Cdetect = 1 
+    #         if (self.Xpos - self.Radius <= object.Rectx.right and self.Xpos > object.Rectx.left):
+    #             self.Speed.Angle_set(math.pi -self.Speed.Angle)
+    #             object.Cdetect = 1
+    #     if (object.Cdetect == 1):
+    #         object.Life -= 1
+    #         object.ChangeColor()   
+    #     return object.Cdetect
 
 
 

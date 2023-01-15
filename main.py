@@ -11,6 +11,7 @@ import Collision
 
 import BlockLogic
 import BallLogic
+from BlockLogic import Block
 from PaddleLogic import Paddle
 from BallLogic import Ball
 from TextContol import Texts
@@ -98,6 +99,7 @@ while True:
             if (CParamsx.BlockDamagedEvent == True):
                 ballx.Speed = CParamsx.speed
                 i.Life -= 1
+                i.ChangeColor()
                 if(i. Life != 0):
                     soundlib.sound_pop.play()
                 else:
@@ -108,7 +110,6 @@ while True:
         CParams = [
             CHandler.ballToPaddle(ballx, player),
             CHandler.ballToScreen(ballx, sc)
-            
         ]
         if (CParams[0].CollisionEvent == True):
             ballx.Speed = CParams[0].speed

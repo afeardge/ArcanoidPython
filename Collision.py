@@ -19,45 +19,51 @@ class CollisionParams:
 
 class CollisionHandler:
 
+    def ballToObject(self, ball: Ball, object) -> CollisionParams:
+        if (type(object) == Paddle):
+            return self.ballToPaddle(ball, object)
+        if (type(object) == Block):
+            return self.ballToBlock(ball, object)
+        else:
+            return self.ballToScreen(ball, object)
+
+
+
+
     def ballToScreen(ball: Ball, screen) -> CollisionParams:
         collisionResult = CollisionParams()
-        NBall = ball
-        Speed = ball.Speed
+        speed = ball.Speed
         #right
-        if ((ball.Xpos + NBall.Radius) >= screen.get_width()):
-            if (Speed.Angle < math.pi/2 or Speed.Angle > math.pi * 1.5):
-                Speed.Angle_set(math.pi - Speed.Angle)
-                collisionResult.CollisionEvent = True
-                
+        if ((ball.Xpos + ball.Radius) >= screen.get_width()):
+            if (ball.Speed.Angle < math.pi/2 or ball.Speed.Angle > math.pi * 1.5):
+                collisionResult.CollisionEvent = True              
         #left
-        if ((NBall.Xpos - NBall.Radius) <= 0):
-            if (Speed.Angle > math.pi/2 or Speed.Angle < math.pi * 1.5):
-                Speed.Angle_set(math.pi - NBall.Speed.Angle)
+        if ((ball.Xpos - ball.Radius) <= 0):
+            if (ball.Speed.Angle > math.pi/2 or ball.Speed.Angle < math.pi * 1.5):
                 collisionResult.CollisionEvent = True
         #bottom
-        if ((NBall.Ypos + NBall.Radius) >= screen.get_height()):
-            if (Speed.Angle > 0 or Speed.Angle < math.pi):
-                Speed.Angle_set(-NBall.Speed.Angle)
+        if ((ball.Ypos + ball.Radius) >= screen.get_height()):
+            if (ball.Speed.Angle > 0 or ball.Speed.Angle < math.pi):
                 collisionResult.CollisionEvent = True
                 collisionResult.OutScreenEvent = True
         #top        
-        if ((NBall.Ypos - NBall.Radius) <= 0):
-            if (Speed.Angle > math.pi or Speed.Angle < 2 * math.pi):
-                Speed.Angle_set(-NBall.Speed.Angle)
+        if ((ball.Ypos - ball.Radius) <= 0):
+            if (ball.Speed.Angle > math.pi or ball.Speed.Angle < 2 * math.pi):
                 collisionResult.CollisionEvent = True
-                
-        collisionResult.speed = Speed
+        if (collisionResult.CollisionEvent == True):
+            speed.Angle_set( math.pi - ball.Speed.Angle)     
+        collisionResult.speed = ball.Speed          
         return collisionResult
 
     def ballToPaddle(ball: Ball, paddle: Paddle) -> CollisionParams:
         collisionResult = CollisionParams()
-        NBall = ball
-        Speed = ball.Speed
-        if ((NBall.Xpos >= paddle.Rectx.left) and (NBall.Xpos <= paddle.Rectx.right) and (NBall.Ypos + NBall.Radius == paddle.Rectx.top)):# and (self.Ypos + self.Radius < paddle.Rectx.bottom)):
-            if (Speed.Angle > 0 or Speed.Angle < math.pi):
-                Speed.Angle_set(math.pi/2 + math.pi/4*(paddle.Rectx.centerx - NBall.Xpos)/(paddle.Rectx.width/2))
+        speed = ball.Speed
+        if ((ball.Xpos >= paddle.Rectx.left) and (ball.Xpos <= paddle.Rectx.right) and (ball.Ypos + ball.Radius == paddle.Rectx.top)):# and (self.Ypos + self.Radius < paddle.Rectx.bottom)):
+            if (ball.Speed.Angle > 0 or ball.Speed.Angle < math.pi):
                 collisionResult.CollisionEvent = True
-        collisionResult.speed = Speed
+        if (collisionResult.CollisionEvent == True):
+            speed.Angle_set(math.pi/2 + math.pi/4*(paddle.Rectx.centerx - ball.Xpos)/(paddle.Rectx.width/2))
+        collisionResult.speed = ball.Speed
         return collisionResult
 
     def ballToBlock(ball: Ball, block: Block)  -> CollisionParams:
