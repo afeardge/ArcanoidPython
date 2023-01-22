@@ -19,6 +19,8 @@ class Block:
     Rectx = []
     Cdetect = 0
     Life = []
+    Iscollisioning = False
+    Collided = False
 
 
     #functions
