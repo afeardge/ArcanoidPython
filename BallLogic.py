@@ -22,9 +22,12 @@ class Vectorx:
         self = object
 
     def Angle_set(self, Angle):
+        
+        while (Angle > math.pi * 2):
+            Angle -= math.pi * 2
+        while (Angle < 0):
+            Angle += math.pi * 2
         self.Angle = Angle
-        AngleCoef = Angle/(math.pi*2);
-        Angle = Angle - AngleCoef * math.pi*2
         self.Recalc()
 
     def Recalc(self):
