@@ -1,10 +1,9 @@
 from operator import truediv
 import pygame
 import math
-
+from Pictures import PictureEngine
 
 SIZE = 35
-SPEED = 5
 LIFES = 3
 
 class Vectorx:
@@ -49,7 +48,8 @@ class Vectorx:
         
 
 class Ball:
-    Speed = Vectorx(SPEED, 0)
+    Speed = []
+    # Speed = Vectorx(SPEED, 0)
 
     Xpos = []
     Ypos = []
@@ -58,7 +58,7 @@ class Ball:
     Hitbox = []
     Speedx = []
     Speedy = []
-    SpeedModule = SPEED
+ 
     Radius = []
 
     SpeedVectorx = 1
@@ -68,12 +68,14 @@ class Ball:
 
 
     Color = (200, 255, 100)
+    pic = []
 
 
 
 
-    def __init__(self, Speed = 0, x = 0, y = 0):
-        self.Speed = Vectorx(SPEED, 0)
+    def __init__(self,spic: PictureEngine, Speed = 0, x = 0, y = 0):
+        self.SpeedModule = Speed
+        self.Speed = Vectorx(self.SpeedModule , 0)
         self.Xpos = x       #offset
         self.Ypos = y       #offset
         self.Size = SIZE
@@ -83,6 +85,7 @@ class Ball:
         self.Life = LIFES
         self.Radius = self.Size/2
         self.Rectx = pygame.Rect(self.Xpos, self.Ypos, self.Size, self.Size)
+        self.pic = spic
 
 
     def copy(self, object):
@@ -99,11 +102,12 @@ class Ball:
 
     
     def Draw(self, ScreenRender):
-        pygame.draw.circle(ScreenRender,self.Color, (self.Xpos, self.Ypos), self.Radius)
+        ScreenRender.blit(self.pic.picture_ball, ( self.Xpos - self.Radius, self.Ypos - self.Radius))
+        # pygame.draw.circle(ScreenRender,self.Color, (self.Xpos, self.Ypos), self.Radius)
 
     def Start(self, button):
         if (button[pygame.K_SPACE]):
-            self.Speed.SetAbs(SPEED)
+            self.Speed.SetAbs(self.SpeedModule )
             self.Speed.Angle_set((math.pi)/4)
             return True
         else:
@@ -112,8 +116,8 @@ class Ball:
 
 
     def SetPos(self, PLayer):
-        self.Xpos = PLayer.Rectx.centerx
-        self.Ypos = PLayer.Rectx.top - self.Radius
+        self.Xpos = PLayer.Xpos + PLayer.Width/2
+        self.Ypos = PLayer.Ypos - self.Radius
 
     # def Collision_block(self, object) -> bool:
     #     #ball

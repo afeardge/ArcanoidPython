@@ -60,11 +60,14 @@ class CollisionHandler:
     def ballToPaddle(ball: Ball, paddle: Paddle) -> CollisionParams:
         collisionResult = CollisionParams()
         speed = ball.Speed
-        if ((ball.Xpos >= paddle.Rectx.left) and (ball.Xpos <= paddle.Rectx.right) and (ball.Ypos + ball.Radius == paddle.Rectx.top)):# and (self.Ypos + self.Radius < paddle.Rectx.bottom)):
+        if ((ball.Xpos >= paddle.Xpos) 
+            and (ball.Xpos <= paddle.Xpos + paddle.Width) 
+            and (ball.Ypos + ball.Radius >= paddle.Ypos) 
+            ):
             if (ball.Speed.Angle > math.pi and ball.Speed.Angle < 2*math.pi):
                 collisionResult.CollisionEvent = True
         if (collisionResult.CollisionEvent == True):
-            speed.Angle_set(math.pi/2 + math.pi/4*(paddle.Rectx.centerx - ball.Xpos)/(paddle.Rectx.width/2))
+            speed.Angle_set(math.pi/2 + math.pi/4*(paddle.Xpos + paddle.Width/2 - ball.Xpos)/(paddle.Width/2))
         collisionResult.speed = ball.Speed
         return collisionResult
 

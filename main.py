@@ -9,14 +9,16 @@ import sys
 import random
 import Collision
 
+
 import BlockLogic
 import BallLogic
 from BlockLogic import Block
 from PaddleLogic import Paddle
 from BallLogic import Ball
 from TextContol import Texts
-from BallLogic import SPEED
+
 from Sounds import SSounds
+from Pictures import PictureEngine
 from Collision import CollisionHandler
 
 #main
@@ -30,20 +32,22 @@ soundlib.__init__()
 
 
 #window
-WIDTH, HEIGHT = 675, 1200
+WIDTH, HEIGHT = 600, 1000
 sc = pygame.display.set_mode((WIDTH, HEIGHT))
 fps = 60
 clock = pygame.time.Clock()
+picturelib = PictureEngine()
+picturelib.__init__()
 
 #player and ball
 PADDLEWIDTH = WIDTH/4
 PADDLEHEIGHT = HEIGHT/32
 PADDLESPEED = 15
-player = Paddle(sc, PADDLESPEED,  200, 200, PADDLEWIDTH, PADDLEHEIGHT)
+player = Paddle(sc, PADDLESPEED,  200, 200, PADDLEWIDTH, PADDLEHEIGHT, picturelib)
 
 #ball
-BALLSPEED = 15
-ballx = Ball(BALLSPEED, 300, 300)
+BALLSPEED = 10
+ballx = Ball(picturelib, BALLSPEED, 300, 300)
 
 #blocks
 BLOCKSCNTX = 10
@@ -61,7 +65,7 @@ blocks  = []
 for i in range(BLOCKSCNTX):
     for j in range(BLOCKSCNTY):
         if (random.randint(0, 1) == 1):
-            blocks.append(BlockLogic.Block(i * BLOCKWIDTH, (j + 1)*BLOCKHEIGHT + BLOCKHEIGHT, BLOCKHEIGHT, BLOCKWIDTH))
+            blocks.append(BlockLogic.Block(i * BLOCKWIDTH, (j + 1)*BLOCKHEIGHT + BLOCKHEIGHT, BLOCKHEIGHT, BLOCKWIDTH, picturelib))
 
 #game control
 pygame.font.init()
@@ -73,20 +77,25 @@ Txt_Lives = Texts(40)
 RUN = False
 GAMEY = 0
 GAMEBLOCKS = 0
+
+SCLENGTH = 0
+
 #main game cycle
 while True:
 #calc
     if ((ballx.Ypos <  10 * BLOCKHEIGHT) and ballx.Speed.Y > 0):
         for i in blocks:
             i.Ypos += 1
+            
         GAMEY += 1
+        SCLENGTH += 1
         if GAMEY >= BLOCKHEIGHT:
             GAMEY = 0
             GAMEBLOCKS += 1
             for i in range(BLOCKSCNTX):
                 if (random.randint(0, 1) == 1):
-                    blocks.append(BlockLogic.Block(i * BLOCKWIDTH, BLOCKHEIGHT + BLOCKHEIGHT, BLOCKHEIGHT, BLOCKWIDTH))
-    ballx.SpeedModule = SPEED + GAMEBLOCKS/100
+                    blocks.append(BlockLogic.Block(i * BLOCKWIDTH, BLOCKHEIGHT + BLOCKHEIGHT, BLOCKHEIGHT, BLOCKWIDTH, picturelib))
+    ballx.SpeedModule = BALLSPEED + GAMEBLOCKS/100
     Txt_Score.place('Score = ' + str(SCORE), 20, 0)
     Txt_Lives.place('Lives = ' + str(LIVES), WIDTH - 200, 0)
     player.Move(sc, pygame.key.get_pressed())
@@ -104,7 +113,7 @@ while True:
                     soundlib.sound_pop.play()
                 else:
                     blocks.remove(i)
-                    soundlib.sound_pop.play()
+                    soundlib.sound_boom.play()
                     SCORE += 1
 
         CParams = [
@@ -125,18 +134,22 @@ while True:
         if i.Ypos > (player.Rectx.top - 2 * BLOCKHEIGHT):
             blocks.remove(i)
     #draw
-    sc.fill((0,0,0))
-    pygame.draw.line(sc, (255, 255, 255), (0, BLOCKHEIGHT*2), (WIDTH, BLOCKHEIGHT*2), 3)
-
+    sc.fill((0,0,0), )
+    sc.blit(picturelib.picture_wallpaper, (0, HEIGHT - picturelib.picture_wallpaper_sizeY + SCLENGTH))
+    rect =  pygame.Rect(0, 0, WIDTH, BLOCKHEIGHT*2)
+    pygame.draw.rect(sc, (0,0,0), rect, 0)  
     player.Draw(sc)
     ballx.Draw(sc)
     for i in range(blocks.__len__()):
         blocks[i].Draw(sc)
     Txt_Score.Draw(sc)
     Txt_Lives.Draw(sc)
+    pygame.draw.line(sc, (255, 255, 255), (0, BLOCKHEIGHT*2), (WIDTH, BLOCKHEIGHT*2), 3)
     for event in pygame.event.get():
         if event.type == pygame.QUIT or LIVES == 0:
             pygame.quit()
             sys.exit()
+    
     pygame.display.flip()
+    
     clock.tick(fps)
