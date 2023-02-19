@@ -2,6 +2,10 @@ from operator import truediv
 import pygame
 import math
 from Pictures import PictureEngine
+# from Config import Config
+
+# from Scenario import hScenario
+# from Main import Scenario_handler 
 
 SIZE = 35
 LIFES = 3
@@ -69,6 +73,7 @@ class Ball:
 
     Color = (200, 255, 100)
     pic = []
+    Started = False
 
 
 
@@ -107,12 +112,18 @@ class Ball:
 
     def Start(self, button):
         if (button[pygame.K_SPACE]):
-            self.Speed.SetAbs(self.SpeedModule )
-            self.Speed.Angle_set((math.pi)/4)
-            return True
-        else:
-            self.Speed.SetAbs(0)
-            return False
+            if (self.Started == True):
+                self.Speed.SetAbs(self.SpeedModule )
+                self.Speed.Angle_set((math.pi)/4)
+            return 1
+        if (button[pygame.K_KP_ENTER]):
+            self.Started = True
+            # Scenario_handler.setScenario(Config.SCENARIO_GAME)
+            return 2
+            
+        # else:
+        #     self.Speed.SetAbs(0)
+        #     return False
 
 
     def SetPos(self, PLayer):

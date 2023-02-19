@@ -1,0 +1,34 @@
+class Config:
+# Default scenarios
+    SCENARIO_MENU = 1
+    SCENARIO_GAME = 2
+
+    DEFAULT_SCENARIO = SCENARIO_MENU
+    
+
+# Winwow parameters
+    WINDOW_WIDTH = 450
+    WINDOW_HEIGHT = 1000
+
+# Paddle
+    PADDLE_WIDTH = WINDOW_WIDTH/4
+    PADDLE_HEIGHT = WINDOW_HEIGHT/32
+    PADDLE_SPEED = 15
+
+# Block parameters
+    BLOCKS_COUNT_X = 9
+    BLOCKS_COUNT_Y = 5
+    BLOCKS_WIDTH = WINDOW_WIDTH/9
+    BLOCKS_HEIGHT = WINDOW_HEIGHT/32
+
+
+
+
+
+
+
+
+
+
+
+
