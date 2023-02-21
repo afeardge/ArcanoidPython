@@ -51,7 +51,7 @@ picturelib = PictureEngine()
 picturelib.__init__()
 
 #player and ball
-player = Paddle(Screenrender.scInstance, Config.PADDLE_SPEED,  200, 200, Config.PADDLE_WIDTH, Config.PADDLE_HEIGHT, picturelib)
+player = Paddle(Screenrender, Config.PADDLE_SPEED,  200, 200, Config.PADDLE_WIDTH, Config.PADDLE_HEIGHT, picturelib)
 
 #ball
 BALLSPEED = 10
@@ -151,22 +151,24 @@ while True:
                 blocks.remove(i)
         #draw
 
-
-        Screenrender.fill((0,0,0), )
+        Screenrender.flush()
+        # Screenrender.fill((0,0,0), )
 
     if (Scenario_handler.getScenario(Scenario_handler)  == 1):
-        Screenrender.blit(picturelib.picture_wallpaper_menu, (0, 0))
+        Screenrender.render(picturelib.picture_wallpaper_menu, (0, 0))
+        # Screenrender.render(BUTTON_MENU.)
         BUTTON_MENU.Draw(BUTTON_MENU, Screenrender)
-        TXT_MENU.Draw(Screenrender)
+        # Screenrender.render(TXT_MENU)
+        # TXT_MENU.Draw(Screenrender)
 
 
 
     if (Scenario_handler.getScenario(Scenario_handler) == 2):
         
         
-        Screenrender.blit(picturelib.picture_wallpaper, (0, Config.WINDOW_HEIGHT - picturelib.picture_wallpaper_sizeY + SCLENGTH))
+        Screenrender.render(picturelib.picture_wallpaper, (0, Config.WINDOW_HEIGHT - picturelib.picture_wallpaper_sizeY + SCLENGTH))
         rect =  pygame.Rect(0, 0, Config.WINDOW_WIDTH,  Config.BLOCKS_HEIGHT*2)
-        pygame.draw.rect(Screenrender, (0,0,0), rect, 0)  
+        pygame.draw.rect(Screenrender.scInstance, (0,0,0), rect, 0)  
         player.Draw(Screenrender)
         ballx.Draw(Screenrender)
         for i in range(blocks.__len__()):

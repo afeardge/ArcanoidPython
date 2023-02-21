@@ -1,7 +1,14 @@
 import pygame
 
 
+class Coordinate:
+    x = 0
+    y = 0
 
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        return self
 
 class Screen:
     scInstance = 0   
@@ -23,8 +30,17 @@ class Screen:
         pygame.display.flip()
         self.clock.tick(self.framerate)
 
-    def render(self, surface, (x,y)):
-        self.scInstance.blit(surface, (x, y))
+    def render(self, surface, *pair):
+        # coords = []
+        # # pair = *pair
+        # for num in pair:
+        #     coords.append(num)
+            # coords[num] = pair[num]   
+        self.scInstance.blit(surface, pair)
+
+    def flush(self):
+        self.scInstance.fill((0, 0, 0), )
+
 
 
     # def render(self,)

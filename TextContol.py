@@ -18,5 +18,8 @@ class Texts:
         self.x = x
         self.y = y
 
+    def getPos(self):
+        return (self.x, self.y)
+
     def Draw(self, screen):
         screen.blit(self.textsurface, (self.x, self.y))

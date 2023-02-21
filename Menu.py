@@ -1,6 +1,7 @@
 import pygame
 from Pictures import PictureEngine
 from TextContol import Texts
+from Screen import Screen
 
 class Button:
     Xpos, Ypos = [], []
@@ -20,10 +21,12 @@ class Button:
         self.text = text
         text.place("", self.Xpos, self.Ypos)
 
-    def Draw(self, ScreenRender):
+    def Draw(self, scren :Screen):
         self.Rectx = pygame.Rect(self.Xpos, self.Ypos,self.Width, self.Height)
-        ScreenRender.blit(self.pic, ( self.Xpos, self.Ypos))
-        self.text.Draw(ScreenRender)
+        scren.render(self.pic, (self.Xpos, self.Ypos))
+        scren.render(self.text.textsurface, self.text.getPos())
+        # ScreenRender.blit(self.pic, ( self.Xpos, self.Ypos))
+        # self.text.Draw(ScreenRender)
 
 # def Place(self, xpos, ypos, ):
 
