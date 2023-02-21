@@ -9,6 +9,7 @@ class Config:
 # Winwow parameters
     WINDOW_WIDTH = 450
     WINDOW_HEIGHT = 1000
+    WINDOW_FPS = 60
 
 # Paddle
     PADDLE_WIDTH = WINDOW_WIDTH/4

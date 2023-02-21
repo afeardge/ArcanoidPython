@@ -100,7 +100,6 @@ class Ball:
     def Move(self, screen, paddle):
         if (self.Speed.GetAbs() == 0):
             self.SetPos(paddle)
-            
         else:
             self.Xpos += self.Speed.Getx()
             self.Ypos += self.Speed.Gety()
@@ -111,6 +110,7 @@ class Ball:
         # pygame.draw.circle(ScreenRender,self.Color, (self.Xpos, self.Ypos), self.Radius)
 
     def Start(self, button):
+        
         if (button[pygame.K_SPACE]):
             if (self.Started == True):
                 self.Speed.SetAbs(self.SpeedModule )

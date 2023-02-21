@@ -25,6 +25,7 @@ from Sounds import SSounds
 from Pictures import PictureEngine
 from Collision import CollisionHandler
 from Scenario import hScenario
+from Screen import Screen
 
 #main
 pygame.init()
@@ -39,17 +40,21 @@ soundlib.__init__()
 
 
 #window
-sc = pygame.display.set_mode((Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT))
-fps = 60
-clock = pygame.time.Clock()
+Screenrender = Screen(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT, Config.WINDOW_FPS)
+# Screenrender.__init__(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT, Config.WINDOW_FPS)
+
+
+# Screenrender = pygame.display.set_mode((Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT))
+# fps = 60
+# clock = pygame.time.Clock()
 picturelib = PictureEngine()
 picturelib.__init__()
 
 #player and ball
-player = Paddle(sc, Config.PADDLE_SPEED,  200, 200, Config.PADDLE_WIDTH, Config.PADDLE_HEIGHT, picturelib)
+player = Paddle(Screenrender.scInstance, Config.PADDLE_SPEED,  200, 200, Config.PADDLE_WIDTH, Config.PADDLE_HEIGHT, picturelib)
 
 #ball
-BALLSPEED = 15
+BALLSPEED = 10
 ballx = Ball(picturelib, BALLSPEED, 300, 300)
 
 
@@ -105,8 +110,8 @@ while True:
         ballx.SpeedModule = BALLSPEED + GAMEBLOCKS/100
         Txt_Score.place('Score = ' + str(SCORE), 20, 0)
         Txt_Lives.place('Lives = ' + str(LIVES), Config.WINDOW_WIDTH - 200, 0)
-        player.Move(sc, pygame.key.get_pressed())
-        ballx.Move(sc, player)
+        player.Move(Screenrender, pygame.key.get_pressed())
+        ballx.Move(Screenrender, player)
         if (RUN == False or blocks.count == 0):
             if (ballx.Start(pygame.key.get_pressed()) == 1):
                 RUN = True
@@ -128,7 +133,7 @@ while True:
 
             CParams = [
                 CHandler.ballToPaddle(ballx, player),
-                CHandler.ballToScreen(ballx, sc)
+                CHandler.ballToScreen(ballx, Screenrender)
             ]
             if (CParams[0].CollisionEvent == True):
                 ballx.Speed = CParams[0].speed
@@ -138,35 +143,37 @@ while True:
                 soundlib.sound_pop.play()
             if (CParams[1].OutScreenEvent == True):
                 RUN = False
-                LIVES -= 1            
+                LIVES -= 1  
+                ballx.SetPos(player)
+                ballx.Speed.SetAbs(0)          
         for i in blocks: 
             if i.Ypos > (player.Rectx.top - 2 *  Config.BLOCKS_HEIGHT):
                 blocks.remove(i)
         #draw
 
 
-        sc.fill((0,0,0), )
+        Screenrender.fill((0,0,0), )
 
     if (Scenario_handler.getScenario(Scenario_handler)  == 1):
-        sc.blit(picturelib.picture_wallpaper_menu, (0, 0))
-        BUTTON_MENU.Draw(BUTTON_MENU, sc)
-        TXT_MENU.Draw(sc)
+        Screenrender.blit(picturelib.picture_wallpaper_menu, (0, 0))
+        BUTTON_MENU.Draw(BUTTON_MENU, Screenrender)
+        TXT_MENU.Draw(Screenrender)
 
 
 
     if (Scenario_handler.getScenario(Scenario_handler) == 2):
         
         
-        sc.blit(picturelib.picture_wallpaper, (0, Config.WINDOW_HEIGHT - picturelib.picture_wallpaper_sizeY + SCLENGTH))
+        Screenrender.blit(picturelib.picture_wallpaper, (0, Config.WINDOW_HEIGHT - picturelib.picture_wallpaper_sizeY + SCLENGTH))
         rect =  pygame.Rect(0, 0, Config.WINDOW_WIDTH,  Config.BLOCKS_HEIGHT*2)
-        pygame.draw.rect(sc, (0,0,0), rect, 0)  
-        player.Draw(sc)
-        ballx.Draw(sc)
+        pygame.draw.rect(Screenrender, (0,0,0), rect, 0)  
+        player.Draw(Screenrender)
+        ballx.Draw(Screenrender)
         for i in range(blocks.__len__()):
-            blocks[i].Draw(sc)
-        Txt_Score.Draw(sc)
-        Txt_Lives.Draw(sc)
-        pygame.draw.line(sc, (255, 255, 255), (0, Config.BLOCKS_HEIGHT*2), (Config.WINDOW_WIDTH,  Config.BLOCKS_HEIGHT*2), 3)
+            blocks[i].Draw(Screenrender)
+        Txt_Score.Draw(Screenrender)
+        Txt_Lives.Draw(Screenrender)
+        pygame.draw.line(Screenrender, (255, 255, 255), (0, Config.BLOCKS_HEIGHT*2), (Config.WINDOW_WIDTH,  Config.BLOCKS_HEIGHT*2), 3)
     
 
     
@@ -176,7 +183,9 @@ while True:
         if event.type == pygame.QUIT or LIVES == 0:
             pygame.quit()
             sys.exit()
+    Screenrender.tick()
+
+
+    # pygame.display.flip()
         
-    pygame.display.flip()
-        
-    clock.tick(fps)
+    # clock.tick(fps)
