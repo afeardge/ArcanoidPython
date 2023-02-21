@@ -50,6 +50,7 @@ player = Paddle(sc, Config.PADDLE_SPEED,  200, 200, Config.PADDLE_WIDTH, Config.
 
 #ball
 BALLSPEED = 10
+testcommitext = 0
 ballx = Ball(picturelib, BALLSPEED, 300, 300)
 
 
