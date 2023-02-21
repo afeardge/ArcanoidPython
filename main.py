@@ -49,7 +49,7 @@ picturelib.__init__()
 player = Paddle(sc, Config.PADDLE_SPEED,  200, 200, Config.PADDLE_WIDTH, Config.PADDLE_HEIGHT, picturelib)
 
 #ball
-BALLSPEED = 10
+BALLSPEED = 15
 ballx = Ball(picturelib, BALLSPEED, 300, 300)
 
 
